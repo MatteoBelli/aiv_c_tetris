@@ -1,7 +1,7 @@
-CC=clang
-CPPCHECK=cppcheck
-CFLAGS=-Wall -Werror
-LDFLAGS=-lSDL2
+CC=D:\Program Files\LLVM\bin\clang.exe
+CPPCHECK=D:\Program Files\Cppcheck\cppcheck.exe
+CFLAGS=-Wall -Werror -Wno-pragma-pack
+LDFLAGS=-lSDL2 -L.
 BINARY=tetris
 BINARY_TESTS=tetris_tests
 
