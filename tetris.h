@@ -23,9 +23,12 @@ typedef struct tetramino tetramino_t;
 typedef struct tetris_map tetris_map_t;
 
 void tetramino_init(struct tetramino *tetramino, struct tetris_map *tetris_map);
+
+int tetramino_move_down_check(struct tetramino *tetramino, struct tetris_map *tetris_map);
 int tetramino_move_down(struct tetramino *tetramino, struct tetris_map *tetris_map);
 int tetramino_move_right(struct tetramino *tetramino, struct tetris_map *tetris_map);
 int tetramino_move_left(struct tetramino *tetramino, struct tetris_map *tetris_map);
+
 void tetramino_draw(tetramino_t *tetramino, SDL_Renderer *renderer, int size);
 
 void tetris_map_init(struct tetris_map *tetris_map, int width, int height);

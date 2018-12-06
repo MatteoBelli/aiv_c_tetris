@@ -45,7 +45,11 @@ int main(int argc, char **argv)
 
 		if (timer <= 0)
 		{
-			if (tetramino_move_down(&tetramino, &map) == TETRAMINO_DEAD)
+			if (tetramino_move_down_check(&tetramino, &map) == TETRAMINO_OK)
+			{
+				tetramino_move_down(&tetramino, &map);
+			}
+			else
 			{
 				if (tetramino.y == -1)
 				{
@@ -66,7 +70,11 @@ int main(int argc, char **argv)
 			{
 				if (event.key.keysym.sym == SDLK_DOWN)
 				{
-					if (tetramino_move_down(&tetramino, &map) == TETRAMINO_DEAD)
+					if (tetramino_move_down_check(&tetramino, &map) == TETRAMINO_OK)
+					{
+						tetramino_move_down(&tetramino, &map);
+					}
+					else
 					{
 						if (tetramino.y == -1)
 						{
@@ -79,6 +87,10 @@ int main(int argc, char **argv)
 				else if (event.key.keysym.sym == SDLK_RIGHT)
 				{
 					tetramino_move_right(&tetramino, &map);
+				}
+				else if (event.key.keysym.sym == SDLK_LEFT)
+				{
+					tetramino_move_left(&tetramino, &map);
 				}
 			}
 		}
@@ -93,6 +105,7 @@ int main(int argc, char **argv)
 
 		SDL_RenderPresent(renderer);
 	}
+
 cleanup4:
 	SDL_DestroyRenderer(renderer);
 cleanup3:
