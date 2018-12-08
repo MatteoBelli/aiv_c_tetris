@@ -24,7 +24,7 @@ void tetris_map_draw(tetris_map_t *map, SDL_Renderer *renderer, int size)
         for (x = 0; x < map->width; x++)
         {
             int index = map->width * y + x;
-            if (map->cell[index] != 0)
+            if (map->cells[index] != 0)
             {
                 SDL_Rect rect;
                 rect.x = x * size;

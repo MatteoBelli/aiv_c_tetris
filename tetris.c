@@ -1,9 +1,23 @@
 #include "tetris.h"
 
-void tetramino_init(struct tetramino *tetramino, struct tetris_map *tetris_map)
+void tetramino_init(struct tetramino *tetramino, int x, int y)
 {
-    tetramino->x = tetris_map->width / 2;
-    tetramino->y = -1;
+    tetramino->x = x;
+    tetramino->y = y;
+}
+
+void spawn_cube(struct tetramino *tetramini, int x, int y)
+{
+    int i = 0;
+    for (i = 0; i < 2; i++)
+    {
+        tetramino_init(&tetramini[i], x + i, y);
+    }
+    y++;
+    for (i = 0; i < 2; i++)
+    {
+        tetramino_init(&tetramini[i + 2], x + i, y);
+    }
 }
 
 int tetramino_move_all_down(struct tetramino tetramini[4], struct tetris_map *tetris_map)
@@ -26,11 +40,11 @@ int tetramino_move_all_down(struct tetramino tetramini[4], struct tetris_map *te
         {
             tetris_map->cells[dead_cells[i]] = 1;
         }
-
-        for (int i = 0; i < 4; i++)
-        {
-            tetramino_move_down(&tetramini[i]);
-        }
+        return TETRAMINO_DEAD;
+    }
+    for (int i = 0; i < 4; i++)
+    {
+        tetramino_move_down(&tetramini[i]);
     }
     return TETRAMINO_OK;
 }
@@ -41,7 +55,7 @@ int tetramino_move_down_check(struct tetramino *tetramino, struct tetris_map *te
     int next_index = tetris_map->width * (tetramino->y + 1) + tetramino->x;
 
     *dead_cell = current_index;
-    if (tetramino->y + 1 >= tetris_map->height)
+    if (tetramino->y >= tetris_map->height - 1)
     {
         return TETRAMINO_DEAD;
     }

@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 		goto cleanup;
 	}
 
-	SDL_Window *window = SDL_CreateWindow("tetris", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, 0);
+	SDL_Window *window = SDL_CreateWindow("tetris", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 300, 600, 0);
 	if (!window)
 	{
 		SDL_Log("unable to create window: %s", SDL_GetError());
@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	tetris_map_t map;
 	tetris_map_init(&map, 10, 20);
 	tetramino_t tetramino;
-	tetramino_init(&tetramino, &map);
+	tetramino_init(&tetramino, 0,-1);
 
 	int timer = 1000;
 	Uint32 last_ticks = SDL_GetTicks();
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 				{
 					goto cleanup4;
 				}
-				tetramino_init(&tetramino, &map);
+				tetramino_init(&tetramino, 0,-1);
 			}
 			timer = 1000;
 		}
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 						{
 							goto cleanup4;
 						}
-						tetramino_init(&tetramino, &map);
+						tetramino_init(&tetramino, 0, -1);
 					}
 					timer = 1000;
 				}
