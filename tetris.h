@@ -16,7 +16,7 @@ struct tetris_map
 {
     int width;
     int height;
-    int *cell;
+    int *cells;
 };
 
 typedef struct tetramino tetramino_t;

@@ -27,10 +27,10 @@ int main(int argc, char **argv)
 		goto cleanup3;
 	}
 
-	tetris_map_t *map = NULL;
-	tetris_map_init(map, 10, 20);
+	tetris_map_t map;
+	tetris_map_init(&map, 10, 20);
 	tetramino_t tetramino;
-	tetramino_init(&tetramino, map);
+	tetramino_init(&tetramino, &map);
 
 	int timer = 1000;
 	Uint32 last_ticks = SDL_GetTicks();
@@ -46,18 +46,18 @@ int main(int argc, char **argv)
 		if (timer <= 0)
 		{
 			int dead_cell;
-			if (tetramino_move_down_check(&tetramino, map, &dead_cell) == TETRAMINO_OK)
+			if (tetramino_move_down_check(&tetramino, &map, &dead_cell) == TETRAMINO_OK)
 			{
 				tetramino_move_down(&tetramino);
 			}
 			else
 			{
-				*map[dead_cell].cell = 1;
+				map.cells[dead_cell] = 1;
 				if (tetramino.y == -1)
 				{
 					goto cleanup4;
 				}
-				tetramino_init(&tetramino, map);
+				tetramino_init(&tetramino, &map);
 			}
 			timer = 1000;
 		}
@@ -73,28 +73,28 @@ int main(int argc, char **argv)
 				if (event.key.keysym.sym == SDLK_DOWN)
 				{
 					int dead_cell;
-					if (tetramino_move_down_check(&tetramino, map, &dead_cell) == TETRAMINO_OK)
+					if (tetramino_move_down_check(&tetramino, &map, &dead_cell) == TETRAMINO_OK)
 					{
 						tetramino_move_down(&tetramino);
 					}
 					else
 					{
-						*map[dead_cell].cell = 1;
+						map.cells[dead_cell] = 1;
 						if (tetramino.y == -1)
 						{
 							goto cleanup4;
 						}
-						tetramino_init(&tetramino, map);
+						tetramino_init(&tetramino, &map);
 					}
 					timer = 1000;
 				}
 				else if (event.key.keysym.sym == SDLK_RIGHT)
 				{
-					tetramino_move_right(&tetramino, map);
+					tetramino_move_right(&tetramino, &map);
 				}
 				else if (event.key.keysym.sym == SDLK_LEFT)
 				{
-					tetramino_move_left(&tetramino, map);
+					tetramino_move_left(&tetramino, &map);
 				}
 			}
 		}
@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 		SDL_RenderClear(renderer);
 
 		// draw map
-		tetris_map_draw(map, renderer, 30);
+		tetris_map_draw(&map, renderer, 30);
 
 		//tetramino draw
 		tetramino_draw(&tetramino, renderer, 30);

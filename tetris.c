@@ -24,7 +24,7 @@ int tetramino_move_all_down(struct tetramino tetramini[4], struct tetris_map *te
 
         for (int i = 0; i < 4; i++)
         {
-            *tetris_map[dead_cells[i]].cell = 1;
+            tetris_map->cells[dead_cells[i]] = 1;
         }
 
         for (int i = 0; i < 4; i++)
@@ -46,7 +46,7 @@ int tetramino_move_down_check(struct tetramino *tetramino, struct tetris_map *te
         return TETRAMINO_DEAD;
     }
 
-    if (tetris_map->cell[next_index] == 1)
+    if (tetris_map->cells[next_index] == 1)
     {
         return TETRAMINO_DEAD;
     }
@@ -69,7 +69,7 @@ int tetramino_move_right(struct tetramino *tetramino, struct tetris_map *tetris_
     }
 
     int right_index = tetris_map->width * tetramino->y + (tetramino->x + 1);
-    if (!tetris_map->cell[right_index])
+    if (!tetris_map->cells[right_index])
     {
         tetramino->x++;
     }
@@ -85,7 +85,7 @@ int tetramino_move_left(struct tetramino *tetramino, struct tetris_map *tetris_m
     }
 
     int left_index = tetris_map->width * tetramino->y + (tetramino->x - 1);
-    if (!tetris_map->cell[left_index])
+    if (!tetris_map->cells[left_index])
     {
         tetramino->x--;
     }
@@ -97,8 +97,8 @@ void tetris_map_init(struct tetris_map *tetris_map, int width, int height)
 {
     int size = sizeof(int) * width * height;
 
-    tetris_map->cell = malloc(size);
-    memset(tetris_map->cell, 0, size);
+    tetris_map->cells = malloc(size);
+    memset(tetris_map->cells, 0, size);
     tetris_map->width = width;
     tetris_map->height = height;
 }
