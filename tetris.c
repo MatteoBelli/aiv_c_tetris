@@ -74,35 +74,53 @@ int tetramino_move_down(struct tetramino *tetramino)
     return TETRAMINO_OK;
 }
 
-int tetramino_move_right(struct tetramino *tetramino, struct tetris_map *tetris_map)
+int tetramino_move_right_check(struct tetramino *tetramino, struct tetris_map *tetris_map, int *dead_cell)
 {
+    int current_index = tetris_map->width * tetramino->y + tetramino->x;
+    *dead_cell = current_index;
+
     if (tetramino->x >= tetris_map->width - 1)
     {
         return TETRAMINO_DEAD;
     }
 
     int right_index = tetris_map->width * tetramino->y + (tetramino->x + 1);
-    if (!tetris_map->cells[right_index])
+    if (tetris_map->cells[right_index] == 1)
     {
-        tetramino->x++;
+        return TETRAMINO_DEAD;
     }
 
     return TETRAMINO_OK;
 }
 
-int tetramino_move_left(struct tetramino *tetramino, struct tetris_map *tetris_map)
+int tetramino_move_right(struct tetramino *tetramino)
 {
+    tetramino->x++;
+    return TETRAMINO_OK;
+}
+
+int tetramino_move_left_check(struct tetramino *tetramino, struct tetris_map *tetris_map, int *dead_cell)
+{
+    int current_index = tetris_map->width * tetramino->y + tetramino->x;
+    *dead_cell = current_index;
+
     if (tetramino->x <= 0)
     {
         return TETRAMINO_DEAD;
     }
 
     int left_index = tetris_map->width * tetramino->y + (tetramino->x - 1);
-    if (!tetris_map->cells[left_index])
+    if (tetris_map->cells[left_index] == 1)
     {
-        tetramino->x--;
+        return TETRAMINO_DEAD;
     }
 
+    return TETRAMINO_OK;
+}
+
+int tetramino_move_left(struct tetramino *tetramino)
+{
+    tetramino->x--;
     return TETRAMINO_OK;
 }
 
