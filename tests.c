@@ -56,7 +56,7 @@ TEST(move_all_down)
 
 	int res = tetramino_move_all_down(tetramini, &map);
 
-	ASSERT_THAT(res==TETRAMINO_OK);
+	ASSERT_THAT(res == TETRAMINO_OK);
 
 	ASSERT_THAT(tetramini[0].x == 0);
 	ASSERT_THAT(tetramini[0].y == -1);
@@ -69,6 +69,39 @@ TEST(move_all_down)
 
 	ASSERT_THAT(tetramini[3].x == 1);
 	ASSERT_THAT(tetramini[3].y == 0);
+}
+
+TEST(move_all_down_end_map)
+{
+	tetramino_t tetramini[4];
+	spawn_cube(tetramini, 0, -2);
+
+	tetris_map_t map;
+	tetris_map_init(&map, 2, 1);
+
+	int res = tetramino_move_all_down(tetramini, &map);
+	res = tetramino_move_all_down(tetramini, &map);
+
+	ASSERT_THAT(res == TETRAMINO_DEAD);
+}
+
+TEST(move_all_down_occupied_cell)
+{
+	tetramino_t tetramini[4];
+	spawn_cube(tetramini, 0, -2);
+
+	tetris_map_t map;
+	tetris_map_init(&map, 2, 1);
+
+	int res = tetramino_move_all_down(tetramini, &map);
+	res = tetramino_move_all_down(tetramini, &map);
+	
+	tetramino_t tetramini2[4];
+	spawn_cube(tetramini2, 0, -2);
+
+	res = tetramino_move_all_down(tetramini2, &map);
+
+	ASSERT_THAT(res == TETRAMINO_DEAD);
 }
 
 TEST(tetramino_move_down_check)
@@ -251,6 +284,8 @@ int main(int argc, char **argv)
 	RUN_TEST(tetramino_move_left_multiple);
 
 	RUN_TEST(move_all_down);
+	RUN_TEST(move_all_down_end_map);
+	RUN_TEST(move_all_down_occupied_cell);
 
 	PRINT_TEST_RESULTS();
 	return 0;
