@@ -35,7 +35,6 @@ int tetramino_move_all_down(struct tetramino tetramini[4], struct tetris_map *te
 
     if (can_move == 1)
     {
-
         for (int i = 0; i < 4; i++)
         {
             tetris_map->cells[dead_cells[i]] = 1;
@@ -79,7 +78,7 @@ int tetramino_move_right(struct tetramino *tetramino, struct tetris_map *tetris_
 {
     if (tetramino->x >= tetris_map->width - 1)
     {
-        return TETRAMINO_OK;
+        return TETRAMINO_DEAD;
     }
 
     int right_index = tetris_map->width * tetramino->y + (tetramino->x + 1);
@@ -95,7 +94,7 @@ int tetramino_move_left(struct tetramino *tetramino, struct tetris_map *tetris_m
 {
     if (tetramino->x <= 0)
     {
-        return TETRAMINO_OK;
+        return TETRAMINO_DEAD;
     }
 
     int left_index = tetris_map->width * tetramino->y + (tetramino->x - 1);
