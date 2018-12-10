@@ -1,7 +1,5 @@
 #include "tetris.h"
 
-int gino = 0;
-
 int main(int argc, char **argv)
 {
 	int ret = 0;
@@ -90,11 +88,17 @@ int main(int argc, char **argv)
 				}
 				else if (event.key.keysym.sym == SDLK_RIGHT)
 				{
-					tetramino_move_right(&tetramino, &map);
+					if (tetramino_move_right_check(&tetramino, &map) == TETRAMINO_OK)
+					{
+						tetramino_move_right(&tetramino);
+					}
 				}
 				else if (event.key.keysym.sym == SDLK_LEFT)
 				{
-					tetramino_move_left(&tetramino, &map);
+					if (tetramino_move_left_check(&tetramino, &map) == TETRAMINO_OK)
+					{
+						tetramino_move_left(&tetramino);
+					}
 				}
 			}
 		}
