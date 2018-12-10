@@ -25,18 +25,20 @@ typedef struct tetris_map tetris_map_t;
 void tetramino_init(struct tetramino *tetramino, int x, int y);
 void spawn_cube(struct tetramino *tetramini, int x, int y);
 
-int tetramino_move_all_down(struct tetramino tetramini[4], struct tetris_map *tetris_map);
+int tetramino_move_all_down(struct tetramino *tetramini, struct tetris_map *tetris_map);
 int tetramino_move_down_check(struct tetramino *tetramino, struct tetris_map *tetris_map, int *dead_cell);
 int tetramino_move_down(struct tetramino *tetramino);
 
+int tetramino_move_all_right(struct tetramino *tetramini, struct tetris_map *tetris_map);
 int tetramino_move_right_check(struct tetramino *tetramino, struct tetris_map *tetris_map);
 int tetramino_move_right(struct tetramino *tetramino);
 
+int tetramino_move_all_left(struct tetramino *tetramini, struct tetris_map *tetris_map);
 int tetramino_move_left_check(struct tetramino *tetramino, struct tetris_map *tetris_map);
 int tetramino_move_left(struct tetramino *tetramino);
 
-
-void tetramino_draw(tetramino_t *tetramino, SDL_Renderer *renderer, int size);
+void draw_block(struct tetramino *tetramini,SDL_Renderer *renderer, int size);
+void tetramino_draw(struct tetramino *tetramino, SDL_Renderer *renderer, int size);
 
 void tetris_map_init(struct tetris_map *tetris_map, int width, int height);
-void tetris_map_draw(tetris_map_t *map, SDL_Renderer *renderer, int size);
+void tetris_map_draw(struct tetris_map *map, SDL_Renderer *renderer, int size);

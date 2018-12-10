@@ -6,7 +6,7 @@ static void _draw_rect_internal(SDL_Renderer *renderer, SDL_Rect *rect, Uint8 r,
     SDL_RenderDrawRect(renderer, rect);
 }
 
-void tetramino_draw(tetramino_t *tetramino, SDL_Renderer *renderer, int size)
+void tetramino_draw(struct tetramino *tetramino, SDL_Renderer *renderer, int size)
 {
     SDL_Rect rect;
     rect.x = tetramino->x * size;
@@ -16,7 +16,15 @@ void tetramino_draw(tetramino_t *tetramino, SDL_Renderer *renderer, int size)
     _draw_rect_internal(renderer, &rect, 255, 0, 0);
 }
 
-void tetris_map_draw(tetris_map_t *map, SDL_Renderer *renderer, int size)
+void draw_block(struct tetramino *tetramini, SDL_Renderer *renderer, int size)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        tetramino_draw(&tetramini[i], renderer, size);
+    }
+}
+
+void tetris_map_draw(struct tetris_map *map, SDL_Renderer *renderer, int size)
 {
     int y, x;
     for (y = 0; y < map->height; y++)

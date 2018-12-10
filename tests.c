@@ -176,6 +176,45 @@ TEST(tetramino_move_down_wrong_value)
 	ASSERT_THAT(tetramino.y == 100);
 }
 
+TEST(move_all_right)
+{
+	tetramino_t tetramini[4];
+	spawn_cube(tetramini, 0, 0);
+
+	tetris_map_t map;
+	tetris_map_init(&map, 4, 4);
+
+	int res = tetramino_move_all_right(tetramini, &map);
+
+	ASSERT_THAT(res == TETRAMINO_OK);
+
+	ASSERT_THAT(tetramini[0].x == 1);
+	ASSERT_THAT(tetramini[0].y == 0);
+
+	ASSERT_THAT(tetramini[1].x == 2);
+	ASSERT_THAT(tetramini[1].y == 0);
+
+	ASSERT_THAT(tetramini[2].x == 1);
+	ASSERT_THAT(tetramini[2].y == 1);
+
+	ASSERT_THAT(tetramini[3].x == 2);
+	ASSERT_THAT(tetramini[3].y == 1);
+}
+
+TEST(move_all_right_border)
+{
+	tetramino_t tetramini[4];
+	spawn_cube(tetramini, 0, 0);
+
+	tetris_map_t map;
+	tetris_map_init(&map, 3, 2);
+
+	int res = tetramino_move_all_right(tetramini, &map);
+	res = tetramino_move_all_right(tetramini, &map);
+
+	ASSERT_THAT(res == TETRAMINO_DEAD);
+}
+
 TEST(tetramino_move_right_check)
 {
 	TETRAMINO_SETUP(2, 1, 0, -1);
@@ -223,6 +262,45 @@ TEST(tetramino_move_right_multiple)
 	TETRAMINO_MOVE_RIGHT(&tetramino, map);
 
 	ASSERT_THAT(tetramino.x == 1);
+}
+
+TEST(move_all_left)
+{
+	tetramino_t tetramini[4];
+	spawn_cube(tetramini, 1, 0);
+
+	tetris_map_t map;
+	tetris_map_init(&map, 4, 4);
+
+	int res = tetramino_move_all_left(tetramini, &map);
+
+	ASSERT_THAT(res == TETRAMINO_OK);
+
+	ASSERT_THAT(tetramini[0].x == 0);
+	ASSERT_THAT(tetramini[0].y == 0);
+
+	ASSERT_THAT(tetramini[1].x == 1);
+	ASSERT_THAT(tetramini[1].y == 0);
+
+	ASSERT_THAT(tetramini[2].x == 0);
+	ASSERT_THAT(tetramini[2].y == 1);
+
+	ASSERT_THAT(tetramini[3].x == 1);
+	ASSERT_THAT(tetramini[3].y == 1);
+}
+
+TEST(move_all_left_border)
+{
+	tetramino_t tetramini[4];
+	spawn_cube(tetramini, 1, 0);
+
+	tetris_map_t map;
+	tetris_map_init(&map, 3, 2);
+
+	int res = tetramino_move_all_right(tetramini, &map);
+	res = tetramino_move_all_right(tetramini, &map);
+
+	ASSERT_THAT(res == TETRAMINO_DEAD);
 }
 
 TEST(tetramino_move_left_check)
@@ -338,12 +416,16 @@ int main(int argc, char **argv)
 	RUN_TEST(tetramino_busy_cell);
 	RUN_TEST(tetramino_fill_two_blocks);
 
+	RUN_TEST(move_all_right);
+	RUN_TEST(move_all_right_border);
 	RUN_TEST(tetramino_move_right_check);
 	RUN_TEST(tetramino_move_right_check_blocked);
 	RUN_TEST(tetramino_move_right);
 	RUN_TEST(tetramino_move_right_blocked);
 	RUN_TEST(tetramino_move_right_multiple);
 
+	RUN_TEST(move_all_left);
+	RUN_TEST(move_all_left_border);
 	RUN_TEST(tetramino_move_left_check);
 	RUN_TEST(tetramino_move_left_check_blocked);
 	RUN_TEST(tetramino_move_left);

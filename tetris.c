@@ -20,7 +20,7 @@ void spawn_cube(struct tetramino *tetramini, int x, int y)
     }
 }
 
-int tetramino_move_all_down(struct tetramino tetramini[4], struct tetris_map *tetris_map)
+int tetramino_move_all_down(struct tetramino *tetramini, struct tetris_map *tetris_map)
 {
     int dead_cells[4];
     int can_move = 0;
@@ -45,6 +45,7 @@ int tetramino_move_all_down(struct tetramino tetramini[4], struct tetris_map *te
     {
         tetramino_move_down(&tetramini[i]);
     }
+
     return TETRAMINO_OK;
 }
 
@@ -74,6 +75,24 @@ int tetramino_move_down(struct tetramino *tetramino)
     return TETRAMINO_OK;
 }
 
+int tetramino_move_all_right(struct tetramino *tetramini, struct tetris_map *tetris_map)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (tetramino_move_right_check(&tetramini[i], tetris_map) == TETRAMINO_DEAD)
+        {
+            return TETRAMINO_DEAD;
+        }
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        tetramino_move_right(&tetramini[i]);
+    }
+    
+    return TETRAMINO_OK;
+}
+
 int tetramino_move_right_check(struct tetramino *tetramino, struct tetris_map *tetris_map)
 {
     if (tetramino->x >= tetris_map->width - 1)
@@ -93,6 +112,24 @@ int tetramino_move_right_check(struct tetramino *tetramino, struct tetris_map *t
 int tetramino_move_right(struct tetramino *tetramino)
 {
     tetramino->x++;
+    return TETRAMINO_OK;
+}
+
+int tetramino_move_all_left(struct tetramino *tetramini, struct tetris_map *tetris_map)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (tetramino_move_left_check(&tetramini[i], tetris_map) == TETRAMINO_DEAD)
+        {
+            return TETRAMINO_DEAD;
+        }
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        tetramino_move_left(&tetramini[i]);
+    }
+    
     return TETRAMINO_OK;
 }
 
