@@ -53,6 +53,15 @@ int main(int argc, char **argv)
 						goto cleanup4;
 					}
 				}
+
+				int rows[4];
+				int res = check_for_full_lines(tetramini, &map, rows);
+
+				if (res > 0)
+				{
+					remove_full_lines(&map, rows, res);
+				}
+
 				spawn_cube(tetramini, map.width / 2 - 1, -2);
 			}
 			timer = 1000;
@@ -77,6 +86,15 @@ int main(int argc, char **argv)
 								goto cleanup4;
 							}
 						}
+
+						int rows[4];
+						int res = check_for_full_lines(tetramini, &map, rows);
+
+						if (res > 0)
+						{
+							remove_full_lines(&map, rows, res);
+						}
+
 						spawn_cube(tetramini, map.width / 2 - 1, -2);
 					}
 					timer = 1000;

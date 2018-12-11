@@ -42,3 +42,6 @@ void tetramino_draw(struct tetramino *tetramino, SDL_Renderer *renderer, int siz
 
 void tetris_map_init(struct tetris_map *tetris_map, int width, int height);
 void tetris_map_draw(struct tetris_map *map, SDL_Renderer *renderer, int size);
+
+int check_for_full_lines(struct tetramino *tetramini, struct tetris_map *tetris_map, int *rows);
+void remove_full_lines(struct tetris_map *tetris_map, int *rows, int len);

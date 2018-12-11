@@ -297,8 +297,8 @@ TEST(move_all_left_border)
 	tetris_map_t map;
 	tetris_map_init(&map, 3, 2);
 
-	int res = tetramino_move_all_right(tetramini, &map);
-	res = tetramino_move_all_right(tetramini, &map);
+	int res = tetramino_move_all_left(tetramini, &map);
+	res = tetramino_move_all_left(tetramini, &map);
 
 	ASSERT_THAT(res == TETRAMINO_DEAD);
 }
@@ -400,6 +400,179 @@ TEST(tetramino_map_init)
 	ASSERT_THAT(tetris_map.cells[0] == 0);
 }
 
+TEST(remove_full_line)
+{
+	tetris_map_t map;
+	tetris_map_init(&map, 4, 2);
+
+	map.cells[4] = 1;
+	map.cells[5] = 1;
+	map.cells[6] = 1;
+	map.cells[7] = 1;
+
+	int rows[4];
+	rows[0] = 1;
+
+	remove_full_lines(&map, rows, 1);
+
+	ASSERT_THAT(map.cells[4] == 0);
+	ASSERT_THAT(map.cells[5] == 0);
+	ASSERT_THAT(map.cells[6] == 0);
+	ASSERT_THAT(map.cells[7] == 0);
+}
+
+TEST(remove_multiple_lines)
+{
+	tetris_map_t map;
+	tetris_map_init(&map, 4, 4);
+
+	map.cells[4] = 1;
+	map.cells[5] = 1;
+	map.cells[6] = 1;
+	map.cells[7] = 1;
+
+	map.cells[8] = 1;
+	map.cells[9] = 1;
+	map.cells[10] = 1;
+	map.cells[11] = 1;
+
+	map.cells[12] = 1;
+	map.cells[13] = 1;
+	map.cells[14] = 1;
+	map.cells[15] = 1;
+
+	int rows[4];
+	rows[0] = 1;
+	rows[1] = 2;
+	rows[2] = 3;
+
+	remove_full_lines(&map, rows, 3);
+
+	ASSERT_THAT(map.cells[4] == 0);
+	ASSERT_THAT(map.cells[5] == 0);
+	ASSERT_THAT(map.cells[6] == 0);
+	ASSERT_THAT(map.cells[7] == 0);
+
+	ASSERT_THAT(map.cells[8] == 0);
+	ASSERT_THAT(map.cells[9] == 0);
+	ASSERT_THAT(map.cells[10] == 0);
+	ASSERT_THAT(map.cells[11] == 0);
+
+	ASSERT_THAT(map.cells[12] == 0);
+	ASSERT_THAT(map.cells[13] == 0);
+	ASSERT_THAT(map.cells[14] == 0);
+	ASSERT_THAT(map.cells[15] == 0);
+}
+
+TEST(check_for_full_lines)
+{
+	tetramino_t tetramini[4];
+	spawn_cube(tetramini, 0, 0);
+
+	tetris_map_t map;
+	tetris_map_init(&map, 2, 2);
+
+	map.cells[0] = 1;
+	map.cells[1] = 1;
+	map.cells[2] = 1;
+	map.cells[3] = 1;
+
+	int rows[4];
+	int res = check_for_full_lines(tetramini, &map, rows);
+
+	ASSERT_THAT(res == 2);
+	ASSERT_THAT(rows[0] == 0);
+	ASSERT_THAT(rows[1] == 1);
+}
+
+TEST(check_for_full_lines_same_positions)
+{
+	tetramino_t tetramini[4];
+	tetramini[0].x = 0;
+	tetramini[0].y = 0;
+
+	tetramini[1].x = 0;
+	tetramini[1].y = 0;
+
+	tetramini[2].x = 0;
+	tetramini[2].y = 0;
+
+	tetramini[3].x = 0;
+	tetramini[3].y = 0;
+
+	tetris_map_t map;
+	tetris_map_init(&map, 2, 1);
+
+	map.cells[0] = 1;
+	map.cells[1] = 1;
+
+	int rows[4];
+	int res = check_for_full_lines(tetramini, &map, rows);
+
+	ASSERT_THAT(res == 1);
+	ASSERT_THAT(rows[0] == 0);
+}
+
+TEST(check_for_full_lines_columns)
+{
+	tetramino_t tetramini[4];
+	tetramini[0].x = 0;
+	tetramini[0].y = 0;
+
+	tetramini[1].x = 0;
+	tetramini[1].y = 1;
+
+	tetramini[2].x = 0;
+	tetramini[2].y = 2;
+
+	tetramini[3].x = 0;
+	tetramini[3].y = 3;
+
+	tetris_map_t map;
+	tetris_map_init(&map, 2, 4);
+
+	map.cells[0] = 1;
+	map.cells[1] = 1;
+	map.cells[2] = 1;
+	map.cells[3] = 1;
+	map.cells[4] = 1;
+	map.cells[5] = 1;
+	map.cells[6] = 1;
+	map.cells[7] = 1;
+
+	int rows[4];
+	int res = check_for_full_lines(tetramini, &map, rows);
+
+	ASSERT_THAT(res == 4);
+	ASSERT_THAT(rows[0] == 0);
+	ASSERT_THAT(rows[1] == 1);
+	ASSERT_THAT(rows[2] == 2);
+	ASSERT_THAT(rows[3] == 3);
+}
+
+TEST(check_for_full_lines_red_light)
+{
+	tetramino_t tetramini[4];
+	spawn_cube(tetramini, 0, 0);
+
+	tetris_map_t map;
+	tetris_map_init(&map, 4, 2);
+
+	map.cells[0] = 1;
+	map.cells[1] = 1;
+	map.cells[2] = 0;
+	map.cells[3] = 0;
+	map.cells[4] = 1;
+	map.cells[5] = 1;
+	map.cells[6] = 0;
+	map.cells[7] = 0;
+
+	int rows[4];
+	int res = check_for_full_lines(tetramini, &map, rows);
+
+	ASSERT_THAT(res == 0);
+}
+
 int main(int argc, char **argv)
 {
 	RUN_TEST(tetramino_init);
@@ -435,6 +608,14 @@ int main(int argc, char **argv)
 	RUN_TEST(move_all_down);
 	RUN_TEST(move_all_down_end_map);
 	RUN_TEST(move_all_down_occupied_cell);
+
+	RUN_TEST(remove_full_line);
+	RUN_TEST(remove_multiple_lines);
+
+	RUN_TEST(check_for_full_lines);
+	RUN_TEST(check_for_full_lines_same_positions);
+	RUN_TEST(check_for_full_lines_columns);
+	RUN_TEST(check_for_full_lines_red_light);
 
 	PRINT_TEST_RESULTS();
 	return 0;
