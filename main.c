@@ -2,6 +2,9 @@
 
 int main(int argc, char **argv)
 {
+
+	srand(time(NULL));
+
 	int ret = 0;
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO))
 	{
@@ -29,7 +32,7 @@ int main(int argc, char **argv)
 	tetris_map_init(&map, 10, 20);
 
 	tetramino_t tetramini[4];
-	spawn_cube(tetramini, map.width / 2 - 1, -2);
+	spawn_random_block(tetramini, &map);
 
 	int timer = 1000;
 	Uint32 last_ticks = SDL_GetTicks();
@@ -62,7 +65,7 @@ int main(int argc, char **argv)
 					remove_full_lines(&map, rows, res);
 				}
 
-				spawn_cube(tetramini, map.width / 2 - 1, -2);
+				spawn_random_block(tetramini, &map);
 			}
 			timer = 1000;
 		}
@@ -95,7 +98,7 @@ int main(int argc, char **argv)
 							remove_full_lines(&map, rows, res);
 						}
 
-						spawn_cube(tetramini, map.width / 2 - 1, -2);
+						spawn_random_block(tetramini, &map);
 					}
 					timer = 1000;
 				}

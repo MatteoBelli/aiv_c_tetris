@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #define SDL_MAIN_HANDLED
 #include ".\SDL\SDL.h"
 
@@ -24,6 +25,7 @@ typedef struct tetris_map tetris_map_t;
 
 void tetramino_init(struct tetramino *tetramino, int x, int y);
 
+void spawn_random_block(struct tetramino *tetramini, struct tetris_map *tetris_map);
 void spawn_cube(struct tetramino *tetramini, int x, int y);
 void spawn_line(struct tetramino *tetramini, int x, int y);
 void spawn_right_l(struct tetramino *tetramini, int x, int y);

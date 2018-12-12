@@ -6,6 +6,52 @@ void tetramino_init(struct tetramino *tetramino, int x, int y)
     tetramino->y = y;
 }
 
+void spawn_random_block(struct tetramino *tetramini, struct tetris_map *tetris_map)
+{
+    int minimum_number = 0;
+    int max_number = 6;
+
+    int half_map = tetris_map->width / 2;
+    int base_y = -2;
+
+    int index = rand() % (max_number + 1 - minimum_number) + minimum_number;
+
+    if (index == 0)
+    {
+        spawn_cube(tetramini, half_map - 1, base_y);
+    }
+
+    if (index == 1)
+    {
+        spawn_line(tetramini, half_map - 2, base_y + 1);
+    }
+
+    if (index == 2)
+    {
+        spawn_right_l(tetramini, half_map + 1, base_y);
+    }
+
+    if (index == 3)
+    {
+        spawn_left_l(tetramini, half_map - 1, base_y);
+    }
+
+    if (index == 4)
+    {
+        spawn_right_z(tetramini, half_map + 1, base_y);
+    }
+
+    if (index == 5)
+    {
+        spawn_left_z(tetramini, half_map - 1, base_y);
+    }
+
+    if (index == 6)
+    {
+        spawn_triangle(tetramini, half_map, base_y);
+    }
+}
+
 void spawn_cube(struct tetramino *tetramini, int x, int y)
 {
     int i = 0;
