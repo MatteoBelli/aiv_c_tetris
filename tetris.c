@@ -11,7 +11,7 @@ void spawn_random_block(struct tetramino *tetramini, int *pivot, struct tetris_m
     *pivot = 2;
 
     int minimum_number = 0;
-    int max_number = 8;
+    int max_number = 9;
 
     int half_map = tetris_map->width / 2;
     int base_y = -2;
@@ -49,7 +49,7 @@ void spawn_random_block(struct tetramino *tetramini, int *pivot, struct tetris_m
         spawn_left_z(tetramini, half_map - 1, base_y);
     }
 
-    if (index == 8)
+    if (index == 8 || index == 9)
     {
         spawn_triangle(tetramini, half_map, base_y);
     }
