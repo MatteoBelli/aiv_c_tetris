@@ -110,9 +110,13 @@ int main(int argc, char **argv)
 				{
 					tetramino_move_all_left(tetramini, &map);
 				}
-				else if (event.key.keysym.sym == SDLK_SPACE)
+				else if (event.key.keysym.sym == SDLK_a)
 				{
-					rotate_block(tetramini, pivot, &map);
+					rotate_block(tetramini, pivot, &map, 0);
+				}
+				else if (event.key.keysym.sym == SDLK_s)
+				{
+					rotate_block(tetramini, pivot, &map, 1);
 				}
 			}
 		}

@@ -509,7 +509,21 @@ TEST(try_rotate_cube)
 	tetris_map_t map;
 	tetris_map_init(&map, 4, 4);
 
-	rotate_block(tetramini, pivot, &map);
+	rotate_block(tetramini, pivot, &map, 1);
+
+	ASSERT_THAT(tetramini[0].x == 0);
+	ASSERT_THAT(tetramini[0].y == 0);
+
+	ASSERT_THAT(tetramini[1].x == 1);
+	ASSERT_THAT(tetramini[1].y == 0);
+
+	ASSERT_THAT(tetramini[2].x == 0);
+	ASSERT_THAT(tetramini[2].y == 1);
+
+	ASSERT_THAT(tetramini[3].x == 1);
+	ASSERT_THAT(tetramini[3].y == 1);
+
+	rotate_block(tetramini, pivot, &map, 0);
 
 	ASSERT_THAT(tetramini[0].x == 0);
 	ASSERT_THAT(tetramini[0].y == 0);
@@ -524,7 +538,7 @@ TEST(try_rotate_cube)
 	ASSERT_THAT(tetramini[3].y == 1);
 }
 
-TEST(rotate_triangle)
+TEST(rotate_triangle_clockwise)
 {
 	tetramino_t tetramini[4];
 	int pivot = 2;
@@ -533,7 +547,7 @@ TEST(rotate_triangle)
 	tetris_map_t map;
 	tetris_map_init(&map, 4, 4);
 
-	rotate_block(tetramini, pivot, &map);
+	rotate_block(tetramini, pivot, &map, 1);
 
 	ASSERT_THAT(tetramini[0].x == 2);
 	ASSERT_THAT(tetramini[0].y == 1);
@@ -548,7 +562,31 @@ TEST(rotate_triangle)
 	ASSERT_THAT(tetramini[3].y == 2);
 }
 
-TEST(rotate_triangle_red_light)
+TEST(rotate_triangle_unclockwise)
+{
+	tetramino_t tetramini[4];
+	int pivot = 2;
+	spawn_triangle(tetramini, 1, 0);
+
+	tetris_map_t map;
+	tetris_map_init(&map, 4, 4);
+
+	rotate_block(tetramini, pivot, &map, 0);
+
+	ASSERT_THAT(tetramini[0].x == 0);
+	ASSERT_THAT(tetramini[0].y == 1);
+
+	ASSERT_THAT(tetramini[1].x == 1);
+	ASSERT_THAT(tetramini[1].y == 2);
+
+	ASSERT_THAT(tetramini[2].x == 1);
+	ASSERT_THAT(tetramini[2].y == 1);
+
+	ASSERT_THAT(tetramini[3].x == 1);
+	ASSERT_THAT(tetramini[3].y == 0);
+}
+
+TEST(rotate_triangle_clockwise_red_light)
 {
 	tetramino_t tetramini[4];
 	int pivot = 2;
@@ -558,7 +596,7 @@ TEST(rotate_triangle_red_light)
 	tetris_map_init(&map, 4, 4);
 	map.cells[9] = 1;
 
-	rotate_block(tetramini, pivot, &map);
+	rotate_block(tetramini, pivot, &map, 1);
 
 	ASSERT_THAT(tetramini[0].x == 1);
 	ASSERT_THAT(tetramini[0].y == 0);
@@ -573,7 +611,32 @@ TEST(rotate_triangle_red_light)
 	ASSERT_THAT(tetramini[3].y == 1);
 }
 
-TEST(rotate_line)
+TEST(rotate_triangle_unclockwise_red_light)
+{
+	tetramino_t tetramini[4];
+	int pivot = 2;
+	spawn_triangle(tetramini, 1, 0);
+
+	tetris_map_t map;
+	tetris_map_init(&map, 4, 4);
+	map.cells[9] = 1;
+
+	rotate_block(tetramini, pivot, &map, 0);
+
+	ASSERT_THAT(tetramini[0].x == 1);
+	ASSERT_THAT(tetramini[0].y == 0);
+
+	ASSERT_THAT(tetramini[1].x == 0);
+	ASSERT_THAT(tetramini[1].y == 1);
+
+	ASSERT_THAT(tetramini[2].x == 1);
+	ASSERT_THAT(tetramini[2].y == 1);
+
+	ASSERT_THAT(tetramini[3].x == 2);
+	ASSERT_THAT(tetramini[3].y == 1);
+}
+
+TEST(rotate_line_clockwise)
 {
 	tetramino_t tetramini[4];
 	int pivot = 2;
@@ -582,7 +645,7 @@ TEST(rotate_line)
 	tetris_map_t map;
 	tetris_map_init(&map, 4, 4);
 
-	rotate_block(tetramini, pivot, &map);
+	rotate_block(tetramini, pivot, &map, 1);
 
 	ASSERT_THAT(tetramini[0].x == 2);
 	ASSERT_THAT(tetramini[0].y == 0);
@@ -597,29 +660,78 @@ TEST(rotate_line)
 	ASSERT_THAT(tetramini[3].y == 3);
 }
 
-TEST(rotate_line_red_light)
+TEST(rotate_line_clockwise_red_light)
 {
 	tetramino_t tetramini[4];
 	int pivot = 2;
-	spawn_line(tetramini, 0, 2);
+	spawn_line(tetramini, 0, 1);
 
 	tetris_map_t map;
 	tetris_map_init(&map, 4, 4);
 	map.cells[2] = 1;
 
-	rotate_block(tetramini, pivot, &map);
+	rotate_block(tetramini, pivot, &map, 1);
 
 	ASSERT_THAT(tetramini[0].x == 0);
-	ASSERT_THAT(tetramini[0].y == 2);
+	ASSERT_THAT(tetramini[0].y == 1);
 
 	ASSERT_THAT(tetramini[1].x == 1);
+	ASSERT_THAT(tetramini[1].y == 1);
+
+	ASSERT_THAT(tetramini[2].x == 2);
+	ASSERT_THAT(tetramini[2].y == 1);
+
+	ASSERT_THAT(tetramini[3].x == 3);
+	ASSERT_THAT(tetramini[3].y == 1);
+}
+
+TEST(rotate_line_unclockwise)
+{
+	tetramino_t tetramini[4];
+	int pivot = 2;
+	spawn_line(tetramini, 0, 1);
+
+	tetris_map_t map;
+	tetris_map_init(&map, 4, 5);
+
+	rotate_block(tetramini, pivot, &map, 0);
+
+	ASSERT_THAT(tetramini[0].x == 2);
+	ASSERT_THAT(tetramini[0].y == 3);
+
+	ASSERT_THAT(tetramini[1].x == 2);
 	ASSERT_THAT(tetramini[1].y == 2);
 
 	ASSERT_THAT(tetramini[2].x == 2);
-	ASSERT_THAT(tetramini[2].y == 2);
+	ASSERT_THAT(tetramini[2].y == 1);
+
+	ASSERT_THAT(tetramini[3].x == 2);
+	ASSERT_THAT(tetramini[3].y == 0);
+}
+
+TEST(rotate_line_unclockwise_red_light)
+{
+	tetramino_t tetramini[4];
+	int pivot = 2;
+	spawn_line(tetramini, 0, 1);
+
+	tetris_map_t map;
+	tetris_map_init(&map, 4, 4);
+	map.cells[2] = 1;
+
+	rotate_block(tetramini, pivot, &map, 0);
+
+	ASSERT_THAT(tetramini[0].x == 0);
+	ASSERT_THAT(tetramini[0].y == 1);
+
+	ASSERT_THAT(tetramini[1].x == 1);
+	ASSERT_THAT(tetramini[1].y == 1);
+
+	ASSERT_THAT(tetramini[2].x == 2);
+	ASSERT_THAT(tetramini[2].y == 1);
 
 	ASSERT_THAT(tetramini[3].x == 3);
-	ASSERT_THAT(tetramini[3].y == 2);
+	ASSERT_THAT(tetramini[3].y == 1);
 }
 
 TEST(tetramino_map_init)
@@ -803,6 +915,22 @@ TEST(check_for_full_lines_red_light)
 	ASSERT_THAT(res == 0);
 }
 
+TEST(order_rows)
+{
+	int rows[4];
+	rows[0] = 4;
+	rows[1] = 1;
+	rows[2] = 3;
+	rows[3] = 2;
+
+	order_rows(rows, 4);
+
+	ASSERT_THAT(rows[0] == 1);
+	ASSERT_THAT(rows[1] == 2);
+	ASSERT_THAT(rows[2] == 3);
+	ASSERT_THAT(rows[3] == 4);
+}
+
 int main(int argc, char **argv)
 {
 	RUN_TEST(tetramino_init);
@@ -851,16 +979,22 @@ int main(int argc, char **argv)
 
 	RUN_TEST(try_rotate_cube);
 
-	RUN_TEST(rotate_triangle);
-	RUN_TEST(rotate_triangle_red_light);
+	RUN_TEST(rotate_triangle_clockwise);
+	RUN_TEST(rotate_triangle_clockwise_red_light);
+	RUN_TEST(rotate_triangle_unclockwise);
+	RUN_TEST(rotate_triangle_unclockwise_red_light);
 
-	RUN_TEST(rotate_line);
-	RUN_TEST(rotate_line_red_light);
+	RUN_TEST(rotate_line_clockwise);
+	RUN_TEST(rotate_line_clockwise_red_light);
+	RUN_TEST(rotate_line_unclockwise);
+	RUN_TEST(rotate_line_unclockwise_red_light);
 
 	RUN_TEST(check_for_full_lines);
 	RUN_TEST(check_for_full_lines_same_positions);
 	RUN_TEST(check_for_full_lines_columns);
 	RUN_TEST(check_for_full_lines_red_light);
+
+	RUN_TEST(order_rows);
 
 	PRINT_TEST_RESULTS();
 	return 0;

@@ -46,7 +46,7 @@ int tetramino_move_all_left(struct tetramino *tetramini, struct tetris_map *tetr
 int tetramino_move_left_check(struct tetramino *tetramino, struct tetris_map *tetris_map);
 int tetramino_move_left(struct tetramino *tetramino);
 
-void rotate_block(struct tetramino *tetramini, int pivot, struct tetris_map *tetris_map);
+void rotate_block(struct tetramino *tetramini, int pivot, struct tetris_map *tetris_map, int clockwise);
 
 void draw_block(struct tetramino *tetramini,SDL_Renderer *renderer, int size);
 void tetramino_draw(struct tetramino *tetramino, SDL_Renderer *renderer, int size);
@@ -56,3 +56,5 @@ void tetris_map_draw(struct tetris_map *map, SDL_Renderer *renderer, int size);
 
 int check_for_full_lines(struct tetramino *tetramini, struct tetris_map *tetris_map, int *rows);
 void remove_full_lines(struct tetris_map *tetris_map, int *rows, int len);
+
+void order_rows(int *rows, int len);

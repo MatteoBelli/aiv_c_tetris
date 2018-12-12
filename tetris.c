@@ -283,7 +283,7 @@ void tetris_map_init(struct tetris_map *tetris_map, int width, int height)
     tetris_map->height = height;
 }
 
-void rotate_block(struct tetramino *tetramini, int pivot, struct tetris_map *tetris_map)
+void rotate_block(struct tetramino *tetramini, int pivot, struct tetris_map *tetris_map, int clockwise)
 {
     if (pivot == 0)
     {
@@ -314,23 +314,53 @@ void rotate_block(struct tetramino *tetramini, int pivot, struct tetris_map *tet
             //check if current is on right-top/bottom/center
             if (tetramini[i].y == center->y - 1)
             {
-                tetramini[i].y += 2;
+                if (clockwise)
+                {
+                    tetramini[i].y += 2;
+                }
+                else
+                {
+                    tetramini[i].x -= 2;
+                }
             }
             else if (tetramini[i].y == center->y + 1)
             {
-                tetramini[i].x -= 2;
+                if (clockwise)
+                {
+                    tetramini[i].x -= 2;
+                }
+                else
+                {
+                    tetramini[i].y -= 2;
+                }
             }
             else if (tetramini[i].y == center->y)
             {
-                tetramini[i].y += 1;
-                tetramini[i].x -= 1;
+                if (clockwise)
+                {
+                    tetramini[i].y += 1;
+                    tetramini[i].x -= 1;
+                }
+                else
+                {
+                    tetramini[i].y -= 1;
+                    tetramini[i].x -= 1;
+                }
             }
         }
         //far right
         else if (tetramini[i].x == center->x + 2 && tetramini[i].y == center->y)
         {
-            tetramini[i].y += 2;
-            tetramini[i].x -= 2;
+            if (clockwise)
+            {
+                tetramini[i].y += 2;
+                tetramini[i].x -= 2;
+            }
+            else
+            {
+                tetramini[i].y -= 2;
+                tetramini[i].x -= 2;
+            }
         }
         //check if current is on left
         else if (tetramini[i].x == center->x - 1)
@@ -338,23 +368,53 @@ void rotate_block(struct tetramino *tetramini, int pivot, struct tetris_map *tet
             //check if current is on left-top/bottom/center
             if (tetramini[i].y == center->y - 1)
             {
-                tetramini[i].x += 2;
+                if (clockwise)
+                {
+                    tetramini[i].x += 2;
+                }
+                else
+                {
+                    tetramini[i].y += 2;
+                }
             }
             else if (tetramini[i].y == center->y + 1)
             {
-                tetramini[i].y -= 2;
+                if (clockwise)
+                {
+                    tetramini[i].y -= 2;
+                }
+                else
+                {
+                    tetramini[i].x += 2;
+                }
             }
             else if (tetramini[i].y == center->y)
             {
-                tetramini[i].y -= 1;
-                tetramini[i].x += 1;
+                if (clockwise)
+                {
+                    tetramini[i].y -= 1;
+                    tetramini[i].x += 1;
+                }
+                else
+                {
+                    tetramini[i].y += 1;
+                    tetramini[i].x += 1;
+                }
             }
         }
-        //far lefts
+        //far left
         else if (tetramini[i].x == center->x - 2 && tetramini[i].y == center->y)
         {
-            tetramini[i].y -= 2;
-            tetramini[i].x += 2;
+            if (clockwise)
+            {
+                tetramini[i].y -= 2;
+                tetramini[i].x += 2;
+            }
+            else
+            {
+                tetramini[i].y += 2;
+                tetramini[i].x += 2;
+            }
         }
         //center
         else
@@ -362,23 +422,55 @@ void rotate_block(struct tetramino *tetramini, int pivot, struct tetris_map *tet
             //check if on center-top/bottom
             if (tetramini[i].y == center->y - 1)
             {
-                tetramini[i].x += 1;
-                tetramini[i].y += 1;
+                if (clockwise)
+                {
+                    tetramini[i].x += 1;
+                    tetramini[i].y += 1;
+                }
+                else
+                {
+                    tetramini[i].x -= 1;
+                    tetramini[i].y += 1;
+                }
             }
             else if (tetramini[i].y == center->y - 2)
             {
-                tetramini[i].x += 2;
-                tetramini[i].y += 2;
+                if (clockwise)
+                {
+                    tetramini[i].x += 2;
+                    tetramini[i].y += 2;
+                }
+                else
+                {
+                    tetramini[i].x -= 2;
+                    tetramini[i].y += 2;
+                }
             }
             else if (tetramini[i].y == center->y + 1)
             {
-                tetramini[i].x -= 1;
-                tetramini[i].y -= 1;
+                if (clockwise)
+                {
+                    tetramini[i].x -= 1;
+                    tetramini[i].y -= 1;
+                }
+                else
+                {
+                    tetramini[i].x += 1;
+                    tetramini[i].y -= 1;
+                }
             }
             else if (tetramini[i].y == center->y + 2)
             {
-                tetramini[i].x -= 2;
-                tetramini[i].y -= 2;
+                if (clockwise)
+                {
+                    tetramini[i].x -= 2;
+                    tetramini[i].y -= 2;
+                }
+                else
+                {
+                    tetramini[i].x += 2;
+                    tetramini[i].y -= 2;
+                }
             }
         }
 
@@ -457,9 +549,27 @@ int check_for_full_lines(struct tetramino *tetramini, struct tetris_map *tetris_
 
 void remove_full_lines(struct tetris_map *tetris_map, int *rows, int len)
 {
+    order_rows(rows, len);
+    
     for (int i = 0; i < len; i++)
     {
         size_t size = sizeof(int) * tetris_map->width * rows[i];
         SDL_memcpy(tetris_map->cells + tetris_map->width, tetris_map->cells, size);
+    }
+}
+
+void order_rows(int *rows, int len)
+{
+    for (int i = 0; i < len; i++)
+    {
+        for (int j = 0; j < len; j++)
+        {
+            if (rows[j] > rows[i])
+            {
+                int tmp = rows[i];
+                rows[i] = rows[j];
+                rows[j] = tmp;
+            }
+        }
     }
 }
