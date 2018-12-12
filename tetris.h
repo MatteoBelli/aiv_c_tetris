@@ -23,7 +23,14 @@ typedef struct tetramino tetramino_t;
 typedef struct tetris_map tetris_map_t;
 
 void tetramino_init(struct tetramino *tetramino, int x, int y);
+
 void spawn_cube(struct tetramino *tetramini, int x, int y);
+void spawn_line(struct tetramino *tetramini, int x, int y);
+void spawn_right_l(struct tetramino *tetramini, int x, int y);
+void spawn_left_l(struct tetramino *tetramini, int x, int y);
+void spawn_right_z(struct tetramino *tetramini, int x, int y);
+void spawn_left_z(struct tetramino *tetramini, int x, int y);
+void spawn_triangle(struct tetramino *tetramini, int x, int y);
 
 int tetramino_move_all_down(struct tetramino *tetramini, struct tetris_map *tetris_map);
 int tetramino_move_down_check(struct tetramino *tetramino, struct tetris_map *tetris_map, int *dead_cell);

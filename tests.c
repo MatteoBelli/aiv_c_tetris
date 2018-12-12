@@ -62,6 +62,114 @@ TEST(spawn_cube)
 	ASSERT_THAT(tetramini[3].y == 1);
 }
 
+TEST(spawn_line)
+{
+	tetramino_t tetramini[4];
+	spawn_line(tetramini, 0, 0);
+
+	ASSERT_THAT(tetramini[0].x == 0);
+	ASSERT_THAT(tetramini[0].y == 0);
+
+	ASSERT_THAT(tetramini[1].x == 1);
+	ASSERT_THAT(tetramini[1].y == 0);
+
+	ASSERT_THAT(tetramini[2].x == 2);
+	ASSERT_THAT(tetramini[2].y == 0);
+
+	ASSERT_THAT(tetramini[3].x == 3);
+	ASSERT_THAT(tetramini[3].y == 0);
+}
+
+TEST(spawn_right_l)
+{
+	tetramino_t tetramini[4];
+	spawn_right_l(tetramini, 3, 0);
+
+	ASSERT_THAT(tetramini[0].x == 3);
+	ASSERT_THAT(tetramini[0].y == 0);
+
+	ASSERT_THAT(tetramini[1].x == 3);
+	ASSERT_THAT(tetramini[1].y == 1);
+
+	ASSERT_THAT(tetramini[2].x == 2);
+	ASSERT_THAT(tetramini[2].y == 1);
+
+	ASSERT_THAT(tetramini[3].x == 1);
+	ASSERT_THAT(tetramini[3].y == 1);
+}
+
+TEST(spawn_left_l)
+{
+	tetramino_t tetramini[4];
+	spawn_left_l(tetramini, 0, 0);
+
+	ASSERT_THAT(tetramini[0].x == 0);
+	ASSERT_THAT(tetramini[0].y == 0);
+
+	ASSERT_THAT(tetramini[1].x == 0);
+	ASSERT_THAT(tetramini[1].y == 1);
+
+	ASSERT_THAT(tetramini[2].x == 1);
+	ASSERT_THAT(tetramini[2].y == 1);
+
+	ASSERT_THAT(tetramini[3].x == 2);
+	ASSERT_THAT(tetramini[3].y == 1);
+}
+
+TEST(spawn_right_z)
+{
+	tetramino_t tetramini[4];
+	spawn_right_z(tetramini, 2, 0);
+
+	ASSERT_THAT(tetramini[0].x == 2);
+	ASSERT_THAT(tetramini[0].y == 0);
+
+	ASSERT_THAT(tetramini[1].x == 1);
+	ASSERT_THAT(tetramini[1].y == 0);
+
+	ASSERT_THAT(tetramini[2].x == 1);
+	ASSERT_THAT(tetramini[2].y == 1);
+
+	ASSERT_THAT(tetramini[3].x == 0);
+	ASSERT_THAT(tetramini[3].y == 1);
+}
+
+TEST(spawn_left_z)
+{
+	tetramino_t tetramini[4];
+	spawn_left_z(tetramini, 0, 0);
+
+	ASSERT_THAT(tetramini[0].x == 0);
+	ASSERT_THAT(tetramini[0].y == 0);
+
+	ASSERT_THAT(tetramini[1].x == 1);
+	ASSERT_THAT(tetramini[1].y == 0);
+
+	ASSERT_THAT(tetramini[2].x == 1);
+	ASSERT_THAT(tetramini[2].y == 1);
+
+	ASSERT_THAT(tetramini[3].x == 2);
+	ASSERT_THAT(tetramini[3].y == 1);
+}
+
+TEST(spawn_triangle)
+{
+	tetramino_t tetramini[4];
+	spawn_triangle(tetramini, 1, 0);
+
+	ASSERT_THAT(tetramini[0].x == 1);
+	ASSERT_THAT(tetramini[0].y == 0);
+
+	ASSERT_THAT(tetramini[1].x == 0);
+	ASSERT_THAT(tetramini[1].y == 1);
+
+	ASSERT_THAT(tetramini[2].x == 1);
+	ASSERT_THAT(tetramini[2].y == 1);
+
+	ASSERT_THAT(tetramini[3].x == 2);
+	ASSERT_THAT(tetramini[3].y == 1);
+}
+
 TEST(move_all_down)
 {
 	tetramino_t tetramini[4];
@@ -577,8 +685,15 @@ int main(int argc, char **argv)
 {
 	RUN_TEST(tetramino_init);
 	RUN_TEST(tetramino_map_init);
-	RUN_TEST(spawn_cube);
 
+	RUN_TEST(spawn_cube);
+	RUN_TEST(spawn_line);
+	RUN_TEST(spawn_right_l);
+	RUN_TEST(spawn_left_l);
+	RUN_TEST(spawn_right_z);
+	RUN_TEST(spawn_left_z);
+	RUN_TEST(spawn_triangle);
+	
 	RUN_TEST(tetramino_move_down_check);
 	RUN_TEST(tetramino_move_down_check_red_light);
 	RUN_TEST(tetramino_move_down_check_multiple_block);

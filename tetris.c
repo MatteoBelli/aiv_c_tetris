@@ -20,6 +20,75 @@ void spawn_cube(struct tetramino *tetramini, int x, int y)
     }
 }
 
+void spawn_line(struct tetramino *tetramini, int x, int y)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        tetramino_init(&tetramini[i], x + i, y);
+    }
+}
+
+void spawn_right_l(struct tetramino *tetramini, int x, int y)
+{
+    tetramino_init(&tetramini[0], x, y);
+    y++;
+    for (int i = 0; i < 3; i++)
+    {
+        tetramino_init(&tetramini[i + 1], x - i, y);
+    }
+}
+
+void spawn_left_l(struct tetramino *tetramini, int x, int y)
+{
+    tetramino_init(&tetramini[0], x, y);
+    y++;
+    for (int i = 0; i < 3; i++)
+    {
+        tetramino_init(&tetramini[i + 1], x + i, y);
+    }
+}
+
+void spawn_right_z(struct tetramino *tetramini, int x, int y)
+{
+    int i = 0;
+    for (i = 0; i < 2; i++)
+    {
+        tetramino_init(&tetramini[i], x - i, y);
+    }
+    x--;
+    y++;
+    for (i = 0; i < 2; i++)
+    {
+        tetramino_init(&tetramini[i + 2], x - i, y);
+    }
+}
+
+void spawn_left_z(struct tetramino *tetramini, int x, int y)
+{
+    int i = 0;
+    for (i = 0; i < 2; i++)
+    {
+        tetramino_init(&tetramini[i], x + i, y);
+    }
+    x++;
+    y++;
+    for (i = 0; i < 2; i++)
+    {
+        tetramino_init(&tetramini[i + 2], x + i, y);
+    }
+}
+
+void spawn_triangle(struct tetramino *tetramini, int x, int y)
+{
+    tetramino_init(&tetramini[0], x, y);
+    x--;
+    y++;
+    for (int i = 0; i < 3; i++)
+    {
+        tetramino_init(&tetramini[i + 1], x + i, y);
+    }
+}
+
 int tetramino_move_all_down(struct tetramino *tetramini, struct tetris_map *tetris_map)
 {
     int dead_cells[4];
