@@ -475,7 +475,7 @@ void rotate_block(struct tetramino *tetramini, int pivot, struct tetris_map *tet
         }
 
         //check if current is out of map
-        if (tetramini[i].x >= tetris_map->width || tetramini[i].x < 0)
+        if (tetramini[i].x >= tetris_map->width || tetramini[i].x < 0 || tetramini[i].y >= tetris_map->height)
         {
             break;
         }
@@ -550,7 +550,7 @@ int check_for_full_lines(struct tetramino *tetramini, struct tetris_map *tetris_
 void remove_full_lines(struct tetris_map *tetris_map, int *rows, int len)
 {
     order_rows(rows, len);
-    
+
     for (int i = 0; i < len; i++)
     {
         size_t size = sizeof(int) * tetris_map->width * rows[i];
