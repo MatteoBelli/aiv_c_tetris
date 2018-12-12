@@ -25,7 +25,7 @@ typedef struct tetris_map tetris_map_t;
 
 void tetramino_init(struct tetramino *tetramino, int x, int y);
 
-void spawn_random_block(struct tetramino *tetramini, struct tetris_map *tetris_map);
+void spawn_random_block(struct tetramino *tetramini, int *pivot, struct tetris_map *tetris_map);
 void spawn_cube(struct tetramino *tetramini, int x, int y);
 void spawn_line(struct tetramino *tetramini, int x, int y);
 void spawn_right_l(struct tetramino *tetramini, int x, int y);
@@ -45,6 +45,8 @@ int tetramino_move_right(struct tetramino *tetramino);
 int tetramino_move_all_left(struct tetramino *tetramini, struct tetris_map *tetris_map);
 int tetramino_move_left_check(struct tetramino *tetramino, struct tetris_map *tetris_map);
 int tetramino_move_left(struct tetramino *tetramino);
+
+void rotate_block(struct tetramino *tetramini, int pivot, struct tetris_map *tetris_map);
 
 void draw_block(struct tetramino *tetramini,SDL_Renderer *renderer, int size);
 void tetramino_draw(struct tetramino *tetramino, SDL_Renderer *renderer, int size);

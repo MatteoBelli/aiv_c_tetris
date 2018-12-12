@@ -6,47 +6,50 @@ void tetramino_init(struct tetramino *tetramino, int x, int y)
     tetramino->y = y;
 }
 
-void spawn_random_block(struct tetramino *tetramini, struct tetris_map *tetris_map)
+void spawn_random_block(struct tetramino *tetramini, int *pivot, struct tetris_map *tetris_map)
 {
+    *pivot = 2;
+
     int minimum_number = 0;
-    int max_number = 6;
+    int max_number = 8;
 
     int half_map = tetris_map->width / 2;
     int base_y = -2;
 
     int index = rand() % (max_number + 1 - minimum_number) + minimum_number;
 
-    if (index == 0)
+    if (index == 0 || index == 1)
     {
+        *pivot = 0;
         spawn_cube(tetramini, half_map - 1, base_y);
     }
 
-    if (index == 1)
+    if (index == 2 || index == 3)
     {
         spawn_line(tetramini, half_map - 2, base_y + 1);
     }
 
-    if (index == 2)
+    if (index == 4)
     {
         spawn_right_l(tetramini, half_map + 1, base_y);
     }
 
-    if (index == 3)
+    if (index == 5)
     {
         spawn_left_l(tetramini, half_map - 1, base_y);
     }
 
-    if (index == 4)
+    if (index == 6)
     {
         spawn_right_z(tetramini, half_map + 1, base_y);
     }
 
-    if (index == 5)
+    if (index == 7)
     {
         spawn_left_z(tetramini, half_map - 1, base_y);
     }
 
-    if (index == 6)
+    if (index == 8)
     {
         spawn_triangle(tetramini, half_map, base_y);
     }
@@ -278,6 +281,134 @@ void tetris_map_init(struct tetris_map *tetris_map, int width, int height)
     memset(tetris_map->cells, 0, size);
     tetris_map->width = width;
     tetris_map->height = height;
+}
+
+void rotate_block(struct tetramino *tetramini, int pivot, struct tetris_map *tetris_map)
+{
+    if (pivot == 0)
+    {
+        return;
+    }
+
+    struct tetramino *center = &tetramini[pivot];
+    //first x then y
+    int pos_backup[8];
+
+    int i;
+    int c = 0;
+    for (i = 0; i < 4; i++)
+    {
+        //store starting position
+        pos_backup[c++] = tetramini[i].x;
+        pos_backup[c++] = tetramini[i].y;
+
+        //check if current is center
+        if (center == &tetramini[i])
+        {
+            continue;
+        }
+
+        //check if current is on right
+        if (tetramini[i].x == center->x + 1)
+        {
+            //check if current is on right-top/bottom/center
+            if (tetramini[i].y == center->y - 1)
+            {
+                tetramini[i].y += 2;
+            }
+            else if (tetramini[i].y == center->y + 1)
+            {
+                tetramini[i].x -= 2;
+            }
+            else if (tetramini[i].y == center->y)
+            {
+                tetramini[i].y += 1;
+                tetramini[i].x -= 1;
+            }
+        }
+        //far right
+        else if (tetramini[i].x == center->x + 2 && tetramini[i].y == center->y)
+        {
+            tetramini[i].y += 2;
+            tetramini[i].x -= 2;
+        }
+        //check if current is on left
+        else if (tetramini[i].x == center->x - 1)
+        {
+            //check if current is on left-top/bottom/center
+            if (tetramini[i].y == center->y - 1)
+            {
+                tetramini[i].x += 2;
+            }
+            else if (tetramini[i].y == center->y + 1)
+            {
+                tetramini[i].y -= 2;
+            }
+            else if (tetramini[i].y == center->y)
+            {
+                tetramini[i].y -= 1;
+                tetramini[i].x += 1;
+            }
+        }
+        //far lefts
+        else if (tetramini[i].x == center->x - 2 && tetramini[i].y == center->y)
+        {
+            tetramini[i].y -= 2;
+            tetramini[i].x += 2;
+        }
+        //center
+        else
+        {
+            //check if on center-top/bottom
+            if (tetramini[i].y == center->y - 1)
+            {
+                tetramini[i].x += 1;
+                tetramini[i].y += 1;
+            }
+            else if (tetramini[i].y == center->y - 2)
+            {
+                tetramini[i].x += 2;
+                tetramini[i].y += 2;
+            }
+            else if (tetramini[i].y == center->y + 1)
+            {
+                tetramini[i].x -= 1;
+                tetramini[i].y -= 1;
+            }
+            else if (tetramini[i].y == center->y + 2)
+            {
+                tetramini[i].x -= 2;
+                tetramini[i].y -= 2;
+            }
+        }
+
+        //check if current is out of map
+        if (tetramini[i].x >= tetris_map->width || tetramini[i].x < 0)
+        {
+            break;
+        }
+
+        //check if current overlap
+        int current_index = tetris_map->width * tetramini[i].y + tetramini[i].x;
+        if (tetris_map->cells[current_index] == 1)
+        {
+            break;
+        }
+    }
+
+    //check if all move
+    if (i == 4)
+    {
+        return;
+    }
+
+    //restore previous position
+    c = 0;
+    for (int j = 0; j <= i; j++)
+    {
+        tetramini[j].x = pos_backup[c++];
+        tetramini[j].y = pos_backup[c++];
+    }
 }
 
 int check_for_full_lines(struct tetramino *tetramini, struct tetris_map *tetris_map, int *rows)

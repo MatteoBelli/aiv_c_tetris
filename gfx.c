@@ -1,5 +1,11 @@
 #include "tetris.h"
 
+static void _fill_rect_internal(SDL_Renderer *renderer, SDL_Rect *rect, Uint8 r, Uint8 g, Uint8 b)
+{
+    SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+    SDL_RenderFillRect(renderer, rect);
+}
+
 static void _draw_rect_internal(SDL_Renderer *renderer, SDL_Rect *rect, Uint8 r, Uint8 g, Uint8 b)
 {
     SDL_SetRenderDrawColor(renderer, r, g, b, 255);
@@ -39,7 +45,7 @@ void tetris_map_draw(struct tetris_map *map, SDL_Renderer *renderer, int size)
                 rect.y = y * size;
                 rect.h = size;
                 rect.w = size;
-                _draw_rect_internal(renderer, &rect, 255, 255, 255);
+                _fill_rect_internal(renderer, &rect, 255, 255, 255);
             }
         }
     }

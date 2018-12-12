@@ -2,7 +2,6 @@
 
 int main(int argc, char **argv)
 {
-
 	srand(time(NULL));
 
 	int ret = 0;
@@ -32,7 +31,8 @@ int main(int argc, char **argv)
 	tetris_map_init(&map, 10, 20);
 
 	tetramino_t tetramini[4];
-	spawn_random_block(tetramini, &map);
+	int pivot;
+	spawn_random_block(tetramini, &pivot, &map);
 
 	int timer = 1000;
 	Uint32 last_ticks = SDL_GetTicks();
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 					remove_full_lines(&map, rows, res);
 				}
 
-				spawn_random_block(tetramini, &map);
+				spawn_random_block(tetramini, &pivot, &map);
 			}
 			timer = 1000;
 		}
@@ -98,7 +98,7 @@ int main(int argc, char **argv)
 							remove_full_lines(&map, rows, res);
 						}
 
-						spawn_random_block(tetramini, &map);
+						spawn_random_block(tetramini, &pivot, &map);
 					}
 					timer = 1000;
 				}
@@ -109,6 +109,10 @@ int main(int argc, char **argv)
 				else if (event.key.keysym.sym == SDLK_LEFT)
 				{
 					tetramino_move_all_left(tetramini, &map);
+				}
+				else if (event.key.keysym.sym == SDLK_SPACE)
+				{
+					rotate_block(tetramini, pivot, &map);
 				}
 			}
 		}
